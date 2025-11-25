@@ -1,14 +1,12 @@
-*
-#!target/*-runner
-#!target/*-runner.jar
-#!target/lib/*
-#!target/quarkus-app/*
+# Ignorar arquivos temporários e de ambiente
+.DS_Store
+.env
+.idea/
+*.log
 
-# .dockerignore
+# Arquivos do Git
 .git
 .gitignore
+
+# Ignorar diretórios de build
 target/
-!target/*-runner
-!target/*.jar
-!target/lib/*
-!target/quarkus-app/*
