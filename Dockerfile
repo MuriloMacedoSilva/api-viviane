@@ -3,7 +3,8 @@ FROM eclipse-temurin:21-jdk-alpine
 WORKDIR /app
 
 # Copia os arquivos essenciais primeiro para garantir o acesso.
-COPY mvnw mvnw.cmd pom.xml ./
+# Removido o 'mvnw.cmd' que pode não existir no seu repositório.
+COPY mvnw pom.xml ./
 
 # Torne o wrapper Maven executável.
 RUN chmod +x mvnw
@@ -12,7 +13,6 @@ RUN chmod +x mvnw
 COPY . .
 
 # Construa a aplicação.
-# O uso de ./mvnw é mais seguro.
 RUN ./mvnw -DoutputFile=target/mvn-dependency-list.log -DskipTests clean dependency:list install
 
 # Execute a aplicação quarkus
