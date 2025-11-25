@@ -13,23 +13,8 @@ public class ConexaoFactory {
         Class.forName("oracle.jdbc.driver.OracleDriver");
 
         // Retornar conexão
-        //return DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE:AS SYSDBA",
-         //       "SYS", "@Afonso08");
-
-
-        // ConexaoFactory.java
-
-        // Configura as propriedades de conexão
-                java.util.Properties info = new java.util.Properties();
-                info.put("user", "SYS");
-                info.put("password", "@Afonso08");
-        // Adiciona a propriedade de papel (role)
-                info.put("internal_logon", "sysdba");
-
-        // Conecta usando as propriedades
-                return DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", info);
-
+        return DriverManager.getConnection("jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl",
+                "rm566462", "030407");
     }
 
 }
-
