@@ -1,5 +1,14 @@
 *
+#!target/*-runner
+#!target/*-runner.jar
+#!target/lib/*
+#!target/quarkus-app/*
+
+# .dockerignore
+.git
+.gitignore
+target/
 !target/*-runner
-!target/*-runner.jar
+!target/*.jar
 !target/lib/*
 !target/quarkus-app/*
