@@ -1,20 +1,20 @@
-package br.com.advocaciaviviane.conexoes;
+//package br.com.advocaciaviviane.conexoes;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+//import java.sql.Connection;
+//import java.sql.DriverManager;
+//import java.sql.SQLException;
 
-public class ConexaoFactory {
+//public class ConexaoFactory {
 
     // metodo de conexão com o banco de dados
-    public Connection conexao() throws ClassNotFoundException, SQLException {
+ //   public Connection conexao() throws ClassNotFoundException, SQLException {
 
         // Driver oracle
-        Class.forName("oracle.jdbc.driver.OracleDriver");
+  //      Class.forName("oracle.jdbc.driver.OracleDriver");
 
         // Retornar conexão
-        return DriverManager.getConnection("jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl",
-                "rm566462", "030407");
-    }
+    //    return DriverManager.getConnection("jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl",
+      //         "rm566462", "030407");
+  //  }
 
-}
+//}

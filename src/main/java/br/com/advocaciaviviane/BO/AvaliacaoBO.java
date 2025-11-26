@@ -2,42 +2,43 @@ package br.com.advocaciaviviane.BO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import br.com.advocaciaviviane.beans.Avaliacao;
 import br.com.advocaciaviviane.DAO.AvaliacaoDAO;
 
+// 💡 Adicione as importações de injeção e escopo
+import jakarta.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+
+@ApplicationScoped
 public class AvaliacaoBO {
 
+    // ✅ CORREÇÃO: INJETA a instância gerenciada do DAO
+    @Inject
     AvaliacaoDAO avaliacaoDAO;
 
     // Selecionar
-    public ArrayList<Avaliacao> selecionarBo() throws ClassNotFoundException, SQLException {
-        avaliacaoDAO = new AvaliacaoDAO();
-        // Regra de negocios
-
-        return (ArrayList<Avaliacao>) avaliacaoDAO.selecionar();
+    public List<Avaliacao> selecionarBo() throws ClassNotFoundException, SQLException {
+        // Usa o DAO injetado
+        return avaliacaoDAO.selecionar();
     }
 
     // Inserir
     public String inserirBo(Avaliacao avaliacao) throws ClassNotFoundException, SQLException {
-        AvaliacaoDAO usuarioDao = new AvaliacaoDAO();
-        // Regra de negocios
-        return usuarioDao.inserir(avaliacao);
+        // Usa o DAO injetado
+        return avaliacaoDAO.inserir(avaliacao);
     }
 
     // Atualizar
     public void atualizarBo (Avaliacao avaliacao) throws ClassNotFoundException, SQLException {
-        AvaliacaoDAO avaliacaoDao = new AvaliacaoDAO();
-        // Regra de negocios
-        avaliacaoDao.atualizar(avaliacao);
+        // Usa o DAO injetado
+        avaliacaoDAO.atualizar(avaliacao);
     }
 
     // Deletar
     public void deletarBo (String id) throws ClassNotFoundException, SQLException {
-        AvaliacaoDAO avaliacaoDao = new AvaliacaoDAO();
-        // Regra de negocios
-        avaliacaoDao.deletar(id);
+        // Usa o DAO injetado
+        avaliacaoDAO.deletar(id);
     }
-
-
 }

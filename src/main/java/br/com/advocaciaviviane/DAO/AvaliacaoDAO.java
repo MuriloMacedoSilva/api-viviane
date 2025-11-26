@@ -1,3 +1,4 @@
+/*
 package br.com.advocaciaviviane.DAO;
 
 import br.com.advocaciaviviane.beans.Avaliacao;
@@ -38,6 +39,7 @@ public class AvaliacaoDAO {
 
         stmt.execute();
         stmt.close();
+        this.minhaConexao.close();
 
         return "Avaliacao cadastrada com sucesso!";
     }
@@ -50,6 +52,7 @@ public class AvaliacaoDAO {
 
         stmt.execute();
         stmt.close();
+        this.minhaConexao.close();
 
         return  "Avaliacao deletada com sucesso!";
     }
@@ -68,6 +71,7 @@ public class AvaliacaoDAO {
 
         stmt.executeUpdate();
         stmt.close();
+        this.minhaConexao.close();
 
         return "Avaliacao atualizada com sucesso!";
     }
@@ -90,8 +94,127 @@ public class AvaliacaoDAO {
             avaliacao.setNota(rs.getInt(7));
             listaAvaliacao.add(avaliacao);
         }
+        this.minhaConexao.close();
         return listaAvaliacao;
     }
 
 
+}*/
+
+
+package br.com.advocaciaviviane.DAO;
+
+import br.com.advocaciaviviane.beans.Avaliacao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.inject.Inject;
+import javax.sql.DataSource;
+import jakarta.enterprise.context.ApplicationScoped;
+
+@ApplicationScoped
+public class AvaliacaoDAO {
+
+    // 1. INJEÇÃO DO POOL DE CONEXÕES GERENCIADO PELO QUARKUS
+    @Inject
+    DataSource dataSource;
+
+    // Insert
+    public String inserir(Avaliacao avaliacao) throws SQLException {
+        String sql = "INSERT INTO avaliacao (nome, dia, mes, ano, avaliacao, nota) VALUES (?, ?, ?, ?, ?, ?)";
+
+        // USO DE TRY-WITH-RESOURCES: Conexão e Statement são fechados automaticamente.
+        try (Connection conexao = dataSource.getConnection();
+             PreparedStatement stmt = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+
+            stmt.setString(1, avaliacao.getNome());
+            stmt.setString(2, avaliacao.getDia());
+            stmt.setString(3, avaliacao.getMes());
+            stmt.setString(4, avaliacao.getAno());
+            stmt.setString(5, avaliacao.getAvaliacao());
+            stmt.setInt(6, avaliacao.getNota());
+
+            stmt.execute();
+            return "Avaliacao cadastrada com sucesso!";
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Delete
+    public String deletar(String id) throws SQLException {
+        String sql = "Delete from avaliacao where id = ?";
+
+        try (Connection conexao = dataSource.getConnection();
+             PreparedStatement stmt = conexao.prepareStatement(sql)) {
+
+            stmt.setString(1, id);
+            stmt.execute();
+            return  "Avaliacao deletada com sucesso!";
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // UpDate
+    public String atualizar(Avaliacao avaliacao) throws SQLException {
+        String sql = "Update avaliacao set NOME = ?, DIA = ?, MES = ?, ANO = ?, AVALIACAO = ?, NOTA = ? where ID = ?";
+
+        try (Connection conexao = dataSource.getConnection();
+             PreparedStatement stmt = conexao.prepareStatement(sql)) {
+
+            stmt.setString(1, avaliacao.getNome());
+            stmt.setString(2, avaliacao.getDia());
+            stmt.setString(3, avaliacao.getMes());
+            stmt.setString(4, avaliacao.getAno());
+            stmt.setString(5, avaliacao.getAvaliacao());
+            stmt.setInt(6, avaliacao.getNota());
+            stmt.setString(7, avaliacao.getId());
+
+            stmt.executeUpdate();
+            return "Avaliacao atualizada com sucesso!";
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    // Select
+    public List<Avaliacao> selecionar() throws SQLException {
+        List<Avaliacao> listaAvaliacao = new ArrayList<Avaliacao>();
+        String sql = "select * from avaliacao";
+
+        try (Connection conexao = dataSource.getConnection();
+             PreparedStatement stmt = conexao.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while(rs.next()){
+                Avaliacao avaliacao = new Avaliacao();
+                avaliacao.setId(rs.getString(1));
+                avaliacao.setNome(rs.getString(2));
+                avaliacao.setDia(rs.getString(3));
+                avaliacao.setMes(rs.getString(4));
+                avaliacao.setAno(rs.getString(5));
+                avaliacao.setAvaliacao(rs.getString(6));
+                avaliacao.setNota(rs.getInt(7));
+                listaAvaliacao.add(avaliacao);
+            }
+
+            return listaAvaliacao;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
 }

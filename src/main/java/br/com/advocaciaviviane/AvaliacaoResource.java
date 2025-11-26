@@ -4,23 +4,24 @@ import br.com.advocaciaviviane.beans.Avaliacao;
 import br.com.advocaciaviviane.BO.AvaliacaoBO;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
-import jakarta.ws.rs.ext.Provider;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import jakarta.inject.Inject; // Importação essencial para injeção
 
-@Provider
-
+// @Provider é geralmente desnecessário para Resources JAX-RS no Quarkus
 @Path("/avaliacao")
 public class AvaliacaoResource {
 
-    private AvaliacaoBO avaliacaoBO = new AvaliacaoBO();
+    // ✅ CORREÇÃO: INJETA a instância gerenciada do BO
+    @Inject
+    private AvaliacaoBO avaliacaoBO;
 
     // Selecionar
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<Avaliacao> selecionarRs() throws ClassNotFoundException, SQLException, SQLException {
+    public ArrayList<Avaliacao> selecionarRs() throws ClassNotFoundException, SQLException {
         return  (ArrayList<Avaliacao>)  avaliacaoBO.selecionarBo();
     }
 
@@ -28,19 +29,17 @@ public class AvaliacaoResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response inserirRs(Avaliacao avaliacao, @Context UriInfo uriInfo) throws ClassNotFoundException, SQLException {
-        AvaliacaoBO avaliacaoBo = new AvaliacaoBO();
+        // REMOVIDO: Instanciação manual do BO
 
         // ALTERAÇÃO: Chama o inserir e armazena o ID gerado
-        String idGerado = avaliacaoBo.inserirBo(avaliacao);
+        String idGerado = avaliacaoBO.inserirBo(avaliacao);
 
         // Verifica se um ID foi gerado
         if (idGerado == null) {
-            // Caso a inserção falhe por algum motivo (embora o DAO devesse lançar exceção)
             return Response.serverError().entity("Falha ao obter ID gerado.").build();
         }
 
         UriBuilder builder = uriInfo.getAbsolutePathBuilder();
-        // CORREÇÃO: Usa o ID gerado pelo banco de dados para construir a URL
         builder.path(idGerado);
         return Response.created(builder.build()).build();
     }
@@ -62,5 +61,4 @@ public class AvaliacaoResource {
         avaliacaoBO.deletarBo(id);
         return Response.ok().build();
     }
-
 }
