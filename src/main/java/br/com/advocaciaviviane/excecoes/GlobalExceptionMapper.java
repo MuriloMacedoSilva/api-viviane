@@ -12,9 +12,6 @@ public class GlobalExceptionMapper implements ExceptionMapper<Exception> {
         e.printStackTrace();
 
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-            .header("Access-Control-Allow-Origin", "*")
-            .header("Access-Control-Allow-Headers", "Content-Type,Authorization")
-            .header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS")
             .entity(new ErrorResponse("Erro interno na API"))
             .build();
     }
