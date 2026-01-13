@@ -200,13 +200,12 @@ public class AvaliacaoDAO {
 
             while(rs.next()){
                 Avaliacao avaliacao = new Avaliacao();
-                avaliacao.setId(rs.getString(1));
-                avaliacao.setNome(rs.getString(2));
-                avaliacao.setDia(rs.getString(3));
-                avaliacao.setMes(rs.getString(4));
-                avaliacao.setAno(rs.getString(5));
-                avaliacao.setAvaliacao(rs.getString(6));
-                avaliacao.setNota(rs.getInt(7));
+                avaliacao.setNome(rs.getString(1));
+                avaliacao.setDia(rs.getString(2));
+                avaliacao.setMes(rs.getString(3));
+                avaliacao.setAno(rs.getString(4));
+                avaliacao.setAvaliacao(rs.getString(5));
+                avaliacao.setNota(rs.getInt(6));
                 listaAvaliacao.add(avaliacao);
             }
 
