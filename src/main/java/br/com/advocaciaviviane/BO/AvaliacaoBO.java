@@ -41,4 +41,5 @@ public class AvaliacaoBO {
         // Usa o DAO injetado
         avaliacaoDAO.deletar(id);
     }
+
 }
