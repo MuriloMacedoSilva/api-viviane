@@ -44,12 +44,24 @@ public class AvaliacaoResource {
 //        return Response.created(builder.build()).build();
 //    }
 
+//    @POST
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    public Response inserirRs(Avaliacao avaliacao) throws ClassNotFoundException, SQLException {
+//        avaliacaoBO.inserirBo(avaliacao);
+//        // Retorna 201 Created com um corpo simples
+//        return Response.status(Response.Status.CREATED).entity("Cadastrado com sucesso").build();
+//    }
+
+    // No AvaliacaoResource.java
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response inserirRs(Avaliacao avaliacao) throws ClassNotFoundException, SQLException {
-        avaliacaoBO.inserirBo(avaliacao);
-        // Retorna 201 Created com um corpo simples
-        return Response.status(Response.Status.CREATED).entity("Cadastrado com sucesso").build();
+        try {
+            avaliacaoBO.inserirBo(avaliacao);
+            return Response.status(Response.Status.CREATED).entity("Avaliação enviada!").build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
     }
 
     // Atualizar

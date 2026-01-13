@@ -125,12 +125,36 @@ public class AvaliacaoDAO {
     DataSource dataSource;
 
     // Insert
+//    public String inserir(Avaliacao avaliacao) throws SQLException {
+//        String sql = "INSERT INTO avaliacao (nome, dia, mes, ano, avaliacao, nota) VALUES (?, ?, ?, ?, ?, ?)";
+//
+//        // USO DE TRY-WITH-RESOURCES: Conexão e Statement são fechados automaticamente.
+//        try (Connection conexao = dataSource.getConnection();
+//             PreparedStatement stmt = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+//
+//            stmt.setString(1, avaliacao.getNome());
+//            stmt.setString(2, avaliacao.getDia());
+//            stmt.setString(3, avaliacao.getMes());
+//            stmt.setString(4, avaliacao.getAno());
+//            stmt.setString(5, avaliacao.getAvaliacao());
+//            stmt.setInt(6, avaliacao.getNota());
+//
+//            stmt.execute();
+//            return "Avaliacao cadastrada com sucesso!";
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            throw e;
+//        }
+//    }
+
+    // No AvaliacaoDAO.java
     public String inserir(Avaliacao avaliacao) throws SQLException {
+        // Adicionamos a coluna 'nota' que você criou no banco
         String sql = "INSERT INTO avaliacao (nome, dia, mes, ano, avaliacao, nota) VALUES (?, ?, ?, ?, ?, ?)";
 
-        // USO DE TRY-WITH-RESOURCES: Conexão e Statement são fechados automaticamente.
         try (Connection conexao = dataSource.getConnection();
-             PreparedStatement stmt = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
             stmt.setString(1, avaliacao.getNome());
             stmt.setString(2, avaliacao.getDia());
@@ -139,8 +163,8 @@ public class AvaliacaoDAO {
             stmt.setString(5, avaliacao.getAvaliacao());
             stmt.setInt(6, avaliacao.getNota());
 
-            stmt.execute();
-            return "Avaliacao cadastrada com sucesso!";
+            stmt.executeUpdate();
+            return "Sucesso"; // Retorno simples para o BO
 
         } catch (SQLException e) {
             e.printStackTrace();
