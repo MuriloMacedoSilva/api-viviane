@@ -190,9 +190,37 @@ public class AvaliacaoDAO {
     }
 
     // Select
+//    public List<Avaliacao> selecionar() throws SQLException {
+//        List<Avaliacao> listaAvaliacao = new ArrayList<Avaliacao>();
+//        String sql = "select * from avaliacao";
+//
+//        try (Connection conexao = dataSource.getConnection();
+//             PreparedStatement stmt = conexao.prepareStatement(sql);
+//             ResultSet rs = stmt.executeQuery()) {
+//
+//            while(rs.next()){
+//                Avaliacao avaliacao = new Avaliacao();
+//                avaliacao.setNome(rs.getString(1));
+//                avaliacao.setDia(rs.getString(2));
+//                avaliacao.setMes(rs.getString(3));
+//                avaliacao.setAno(rs.getString(4));
+//                avaliacao.setAvaliacao(rs.getString(5));
+//                avaliacao.setNota(rs.getInt(6));
+//                listaAvaliacao.add(avaliacao);
+//            }
+//
+//            return listaAvaliacao;
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            throw e;
+//        }
+//    }
+
+
     public List<Avaliacao> selecionar() throws SQLException {
-        List<Avaliacao> listaAvaliacao = new ArrayList<Avaliacao>();
-        String sql = "select * from avaliacao";
+        List<Avaliacao> listaAvaliacao = new ArrayList<>();
+        String sql = "SELECT id, nome, dia, mes, ano, avaliacao, nota FROM avaliacao"; // Liste as colunas explicitamente
 
         try (Connection conexao = dataSource.getConnection();
              PreparedStatement stmt = conexao.prepareStatement(sql);
@@ -200,20 +228,20 @@ public class AvaliacaoDAO {
 
             while(rs.next()){
                 Avaliacao avaliacao = new Avaliacao();
-                avaliacao.setNome(rs.getString(1));
-                avaliacao.setDia(rs.getString(2));
-                avaliacao.setMes(rs.getString(3));
-                avaliacao.setAno(rs.getString(4));
-                avaliacao.setAvaliacao(rs.getString(5));
-                avaliacao.setNota(rs.getInt(6));
+                // Use nomes de colunas em vez de números para evitar erros de índice
+                avaliacao.setId(rs.getString("id"));
+                avaliacao.setNome(rs.getString("nome"));
+                avaliacao.setDia(rs.getString("dia"));
+                avaliacao.setMes(rs.getString("mes"));
+                avaliacao.setAno(rs.getString("ano"));
+                avaliacao.setAvaliacao(rs.getString("avaliacao"));
+                // Se a coluna 'nota' existir no MySQL, mantenha abaixo.
+                // Se não existir, remova esta linha:
+                avaliacao.setNota(rs.getInt("nota"));
+
                 listaAvaliacao.add(avaliacao);
             }
-
             return listaAvaliacao;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw e;
         }
     }
 }

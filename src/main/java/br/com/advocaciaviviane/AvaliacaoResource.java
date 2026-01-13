@@ -26,22 +26,30 @@ public class AvaliacaoResource {
     }
 
     // Inserir
+//    @POST
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    public Response inserirRs(Avaliacao avaliacao, @Context UriInfo uriInfo) throws ClassNotFoundException, SQLException {
+//        // REMOVIDO: Instanciação manual do BO
+//
+//        // ALTERAÇÃO: Chama o inserir e armazena o ID gerado
+//        String idGerado = avaliacaoBO.inserirBo(avaliacao);
+//
+//        // Verifica se um ID foi gerado
+//        if (idGerado == null) {
+//            return Response.serverError().entity("Falha ao obter ID gerado.").build();
+//        }
+//
+//        UriBuilder builder = uriInfo.getAbsolutePathBuilder();
+//        builder.path(idGerado);
+//        return Response.created(builder.build()).build();
+//    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response inserirRs(Avaliacao avaliacao, @Context UriInfo uriInfo) throws ClassNotFoundException, SQLException {
-        // REMOVIDO: Instanciação manual do BO
-
-        // ALTERAÇÃO: Chama o inserir e armazena o ID gerado
-        String idGerado = avaliacaoBO.inserirBo(avaliacao);
-
-        // Verifica se um ID foi gerado
-        if (idGerado == null) {
-            return Response.serverError().entity("Falha ao obter ID gerado.").build();
-        }
-
-        UriBuilder builder = uriInfo.getAbsolutePathBuilder();
-        builder.path(idGerado);
-        return Response.created(builder.build()).build();
+    public Response inserirRs(Avaliacao avaliacao) throws ClassNotFoundException, SQLException {
+        avaliacaoBO.inserirBo(avaliacao);
+        // Retorna 201 Created com um corpo simples
+        return Response.status(Response.Status.CREATED).entity("Cadastrado com sucesso").build();
     }
 
     // Atualizar
