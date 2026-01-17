@@ -16,10 +16,10 @@ public class GlobalExceptionMapper implements ExceptionMapper<Exception> {
     public Response toResponse(Exception e) {
 
         // NÃO intercepta preflight
-        if ("OPTIONS".equalsIgnoreCase(headers.getRequestHeaders()
-                .getFirst(":method"))) {
-            return Response.ok().build();
-        }
+//        if ("OPTIONS".equalsIgnoreCase(headers.getRequestHeaders()
+//                .getFirst(":method"))) {
+//            return Response.ok().build();
+//        }
 
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                 .entity(e.getMessage())
